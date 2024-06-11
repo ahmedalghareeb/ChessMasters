@@ -1,0 +1,5 @@
+# Ignore Java files
+*.class
+*.jar
+*.war
+*.ear
