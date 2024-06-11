@@ -13,6 +13,7 @@ public class FinalGame_Chess extends Applet implements ActionListener
     Panel card1, card2, card3, card4, card5; //the two screens
     CardLayout cdLayout = new CardLayout ();
 
+
 	//turns
 	JLabel turnpic;
 	char turn='w';
