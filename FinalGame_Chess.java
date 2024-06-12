@@ -126,12 +126,12 @@ public class FinalGame_Chess extends Applet implements ActionListener
         {
             for (int j = 0 ; j < col ; j++)
             { 
-				a [move] = new JButton(createImageIcon (piece [i] [j] + "" + colour [i] [j] + "" + bg [i] [j] + "" + select [i] [j] + ".jpg"));
-				a [move].setPreferredSize (new Dimension (75, 75));
-				a [move].addActionListener (this);
-				a [move].setActionCommand ("" + move);
-				p.add (a [move]);
-				move++;
+                a [move] = new JButton(createImageIcon (piece [i] [j] + "" + colour [i] [j] + "" + bg [i] [j] + "" + select [i] [j] + ".jpg"));
+                a [move].setPreferredSize (new Dimension (75, 75));
+                a [move].addActionListener (this);
+                a [move].setActionCommand ("" + move);
+                p.add (a [move]);
+                move++;
             }
         }
         card3.add (title);
@@ -195,8 +195,8 @@ public class FinalGame_Chess extends Applet implements ActionListener
         {
             for (int j = 0 ; j < col ; j++)
             {
-				a [move].setIcon (createImageIcon (piece [i] [j] + "" + colour [i] [j] + "" + bg [i] [j] + "" + select [i] [j] + ".jpg"));
-				move++;
+                a [move].setIcon (createImageIcon (piece [i] [j] + "" + colour [i] [j] + "" + bg [i] [j] + "" + select [i] [j] + ".jpg"));
+                move++;
             }
         }
     }
@@ -207,238 +207,302 @@ public class FinalGame_Chess extends Applet implements ActionListener
         // Pawn Movement
         if (colour[x][y] == 'b' && x == 6)
         {
-			System.out.println("black and 6");
+            System.out.println("black and 6");
             select[x - 1][y] = 's';
             select[x - 2][y] = 's';
         }
         else if (colour[x][y] == 'w' && x == 1)
         {
-			System.out.println("white and 1");
+            System.out.println("white and 1");
             select[x + 1][y] = 's';
             select[x + 2][y] = 's';
         }
         else if (colour[x][y] == 'b')
         {
-			System.out.println("black");
+            System.out.println("black");
             select[x - 1][y] = 's';
         }
         else if (colour[x][y] == 'w')
         {
-			System.out.println("white");
+            System.out.println("white");
             select[x + 1][y] = 's';
         }
     }
 
-	public void selectKing(int x, int y)
+    public void selectKing(int x, int y)
+    {
+        if (x - 1 >=0 && y + 1 < col && colour[x - 1][y + 1] != turn)
+        {
+            select[x - 1][y + 1] = 's';
+        }
+        if (x + 1 < row && y + 1 < col && colour[x + 1][y + 1] != turn)
+        {
+            select[x + 1][y + 1] = 's';
+        }
+        if (y - 1 >= 0 && colour[x][y - 1] != turn)
+        {
+            select[x][y - 1] = 's';
+        }
+        if (x - 1 >= 0 && colour[x - 1][y] != turn)
+        {
+            select[x - 1][y] = 's';
+        }
+        if (x - 1 >= 0 && y - 1 >= 0 && colour[x - 1][y - 1] != turn)
+        {
+            select[x - 1][y - 1] = 's';
+        }
+        if (x + 1 < row && y - 1 >= 0 && colour[x + 1][y - 1] != turn)
+        {
+            select[x + 1][y - 1] = 's';
+        }
+        if (y + 1 < col && colour[x][y + 1] != turn)
+        {
+            select[x][y + 1] = 's';
+        }
+        if (x + 1 < row && colour[x + 1][y] != turn)
+        {
+            select[x + 1][y] = 's';
+        }
+    }
+    public void selectKnight(int x, int y)
+    {
+        if (x - 2 >= 0 && y + 1 < col && colour[x - 2][y + 1] != turn)
+        {
+            select[x - 2][y + 1] = 's';
+        }
+        if (x - 2 >= 0 && y - 1 >= 0 && colour[x - 2][y - 1] != turn)
+        {
+            select[x - 2][y - 1] = 's';
+        }
+        if (x + 2 < row && y + 1 < col && colour[x + 2][y + 1] != turn)
+        {
+            select[x + 2][y + 1] = 's';
+        }
+        if (x + 2 < row && y - 1 >= 0 && colour[x + 2][y - 1] != turn)
+        {
+            select[x + 2][y - 1] = 's';
+        }
+        if (x - 1 >= 0 && y + 2 < col && colour[x - 1][y + 2] != turn)
+        {
+            select[x - 1][y + 2] = 's';
+        }
+        if (x - 1 >= 0 && y - 2 >= 0 && colour[x - 1][y - 2] != turn)
+        {
+            select[x - 1][y - 2] = 's';
+        }
+        if (x + 1 < row && y + 2 < col && colour[x + 1][y + 2] != turn)
+        {
+            select[x + 1][y + 2] = 's';
+        }
+        if (x + 1 < row && y - 2 >= 0 && colour[x + 1][y - 2] != turn)
+        {
+            select[x + 1][y - 2] = 's';
+        }
+    }
+
+    public void selectRook(int x, int y)
+    {
+        // up
+        for (int i = x - 1; i >= 0; i--)
+        {
+            if (colour[i][y] == turn)
+            {
+                break;
+            }
+            select[i][y] = 's';
+            if (colour[i][y] != 'x')
+            {
+                break;
+            }
+        }
+        // down
+        for (int i = x + 1; i < row; i++)
+        {
+            if (colour[i][y] == turn)
+            {
+                break;
+            }
+            select[i][y] = 's';
+            if (colour[i][y] != 'x')
+            {
+                break;
+            }
+        }
+        // left
+        for (int i = y - 1; i >= 0; i--)
+        {
+            if (colour[x][i] == turn)
+            {
+                break;
+            }
+            select[x][i] = 's';
+            if (colour[x][i] != 'x')
+            {
+                break;
+            }
+        }
+        // right
+        for (int i = y + 1; i < col; i++)
+        {
+            if (colour[x][i] == turn)
+            {
+                break;
+            }
+            select[x][i] = 's';
+            if (colour[x][i] != 'x')
+            {
+                break;
+            }
+        }
+    } 
+	poblic void selectBishop(int x, int y)
 	{
-		if (x - 1 >=0 && y + 1 < col && colour[x - 1][y + 1] != turn)
+		// up right
+		for (int i = x - 1, j = y + 1; i >= 0 && j < col; i--, j++)
 		{
-			select[x - 1][y + 1] = 's';
+			if (colour[i][j] == turn)
+			{
+				break;
+			}
+			select[i][j] = 's';
+			if (colour[i][j] != 'x')
+			{
+				break;
+			}
 		}
-		if (x + 1 < row && y + 1 < col && colour[x + 1][y + 1] != turn)
+		// up left
+		for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--)
 		{
-			select[x + 1][y + 1] = 's';
+			if (colour[i][j] == turn)
+			{
+				break;
+			}
+			select[i][j] = 's';
+			if (colour[i][j] != 'x')
+			{
+				break;
+			}
 		}
-		if (y - 1 >= 0 && colour[x][y - 1] != turn)
+		// down right
+		for (int i = x + 1, j = y + 1; i < row && j < col; i++, j++)
 		{
-			select[x][y - 1] = 's';
+			if (colour[i][j] == turn)
+			{
+				break;
+			}
+			select[i][j] = 's';
+			if (colour[i][j] != 'x')
+			{
+				break;
+			}
 		}
-		if (x - 1 >= 0 && colour[x - 1][y] != turn)
+		// down left
+		for (int i = x + 1, j = y - 1; i < row && j >= 0; i++, j--)
 		{
-			select[x - 1][y] = 's';
-		}
-		if (x - 1 >= 0 && y - 1 >= 0 && colour[x - 1][y - 1] != turn)
-		{
-			select[x - 1][y - 1] = 's';
-		}
-		if (x + 1 < row && y - 1 >= 0 && colour[x + 1][y - 1] != turn)
-		{
-			select[x + 1][y - 1] = 's';
-		}
-		if (y + 1 < col && colour[x][y + 1] != turn)
-		{
-			select[x][y + 1] = 's';
-		}
-		if (x + 1 < row && colour[x + 1][y] != turn)
-		{
-			select[x + 1][y] = 's';
-		}
-	}
-	public void selectKnight(int x, int y)
-	{
-		if (x - 2 >= 0 && y + 1 < col && colour[x - 2][y + 1] != turn)
-		{
-			select[x - 2][y + 1] = 's';
-		}
-		if (x - 2 >= 0 && y - 1 >= 0 && colour[x - 2][y - 1] != turn)
-		{
-			select[x - 2][y - 1] = 's';
-		}
-		if (x + 2 < row && y + 1 < col && colour[x + 2][y + 1] != turn)
-		{
-			select[x + 2][y + 1] = 's';
-		}
-		if (x + 2 < row && y - 1 >= 0 && colour[x + 2][y - 1] != turn)
-		{
-			select[x + 2][y - 1] = 's';
-		}
-		if (x - 1 >= 0 && y + 2 < col && colour[x - 1][y + 2] != turn)
-		{
-			select[x - 1][y + 2] = 's';
-		}
-		if (x - 1 >= 0 && y - 2 >= 0 && colour[x - 1][y - 2] != turn)
-		{
-			select[x - 1][y - 2] = 's';
-		}
-		if (x + 1 < row && y + 2 < col && colour[x + 1][y + 2] != turn)
-		{
-			select[x + 1][y + 2] = 's';
-		}
-		if (x + 1 < row && y - 2 >= 0 && colour[x + 1][y - 2] != turn)
-		{
-			select[x + 1][y - 2] = 's';
+			if (colour[i][j] == turn)
+			{
+				break;
+			}
+			select[i][j] = 's';
+			if (colour[i][j] != 'x')
+			{
+				break;
+			}
 		}
 	}
 
-	public void selectRook(int x, int y)
-	{
-		// up
-		for (int i = x - 1; i >= 0; i--)
-		{
-			if (colour[i][y] == turn)
-			{
-				break;
-			}
-			select[i][y] = 's';
-			if (colour[i][y] != 'x')
-			{
-				break;
-			}
-		}
-		// down
-		for (int i = x + 1; i < row; i++)
-		{
-			if (colour[i][y] == turn)
-			{
-				break;
-			}
-			select[i][y] = 's';
-			if (colour[i][y] != 'x')
-			{
-				break;
-			}
-		}
-		// left
-		for (int i = y - 1; i >= 0; i--)
-		{
-			if (colour[x][i] == turn)
-			{
-				break;
-			}
-			select[x][i] = 's';
-			if (colour[x][i] != 'x')
-			{
-				break;
-			}
-		}
-		// right
-		for (int i = y + 1; i < col; i++)
-		{
-			if (colour[x][i] == turn)
-			{
-				break;
-			}
-			select[x][i] = 's';
-			if (colour[x][i] != 'x')
-			{
-				break;
-			}
-		}
-	} 
-	
+    
     public void actionPerformed (ActionEvent e)
     { //moves between the screens
-		if (e.getActionCommand ().equals ("s1"))
-			cdLayout.show (p_card, "1");
-		else if (e.getActionCommand ().equals ("s2"))
-			cdLayout.show (p_card, "2");
-		else if (e.getActionCommand ().equals ("s3"))
-			cdLayout.show (p_card, "3");
-		else if (e.getActionCommand ().equals ("s4"))
-			cdLayout.show (p_card, "4");
-		else if (e.getActionCommand ().equals ("s5"))
-			cdLayout.show (p_card, "5");
-		else if (e.getActionCommand ().equals ("s6"))
-			System.exit (0);
-		else
-		{ //code to handle the game
-			int n = Integer.parseInt (e.getActionCommand ());
-			int x = n / col;
-			int y = n % col;
-			showStatus ("(" + x + ", " + y + ")");
+        if (e.getActionCommand ().equals ("s1"))
+            cdLayout.show (p_card, "1");
+        else if (e.getActionCommand ().equals ("s2"))
+            cdLayout.show (p_card, "2");
+        else if (e.getActionCommand ().equals ("s3"))
+            cdLayout.show (p_card, "3");
+        else if (e.getActionCommand ().equals ("s4"))
+            cdLayout.show (p_card, "4");
+        else if (e.getActionCommand ().equals ("s5"))
+            cdLayout.show (p_card, "5");
+        else if (e.getActionCommand ().equals ("s6"))
+            System.exit (0);
+        else
+        { //code to handle the game
+            int n = Integer.parseInt (e.getActionCommand ());
+            int x = n / col;
+            int y = n % col;
+            showStatus ("(" + x + ", " + y + ")");
 
-			if (turn != colour[x][y] && last == -1)
-			{
-				showStatus ("Not your turn");
-			}
-			else if (last == -1 && turn == colour[x][y])
-			{
-				if (piece[x][y] == 'p')
+            if (turn != colour[x][y] && last == -1)
+            {
+                showStatus ("Not your turn");
+            }
+            else if (last == -1 && turn == colour[x][y])
+            {
+                if (piece[x][y] == 'p')
+                {
+                    selectPawn(x, y);
+                }
+                else if (piece[x][y] == 'k')
+                {
+                    selectKing(x, y);
+                }
+                else if (piece[x][y] == 'n')
+                {
+                    selectKnight(x, y);
+                }    
+                else if (piece[x][y] == 'r')
+                {
+                    selectRook(x, y);
+                }
+				else if (piece[x][y] == 'b')
 				{
-					selectPawn(x, y);
+					selectBishop(x, y);
 				}
-				else if (piece[x][y] == 'k')
+				else if (piece[x][y] == 'q')
 				{
-					selectKing(x, y);
+					selectQueen(x, y);
 				}
-				else if (piece[x][y] == 'n')
-				{
-					selectKnight(x, y);
-				}	
-				else if (piece[x][y] == 'r')
-				{
-					selectRook(x, y);
-				}
-					
-				
-				last = n;
-			}
-			else
-			{
-				int lastx = last / col;
-				int lasty = last % col;
-				//move
-				if (select[x][y] == 's')
-				{
-					//move
-					piece[x][y] = piece[lastx][lasty];
-					piece[lastx][lasty] = 'x';
-					colour[x][y] = colour[lastx][lasty];
-					colour[lastx][lasty] = 'x';
-					//switch turn
-					if (turn == 'w')
-					{
-						turn = 'b';
-						turnpic.setIcon(createImageIcon("slytherinLogo.png"));
-					}
-					else
-					{
-						turn = 'w';
-						turnpic.setIcon(createImageIcon("gryffindorLogo.png"));
-					}
-				} // Move end
+                    
+                
+                last = n;
+            }
+            else
+            {
+                int lastx = last / col;
+                int lasty = last % col;
+                //move
+                if (select[x][y] == 's')
+                {
+                    //move
+                    piece[x][y] = piece[lastx][lasty];
+                    piece[lastx][lasty] = 'x';
+                    colour[x][y] = colour[lastx][lasty];
+                    colour[lastx][lasty] = 'x';
+                    //switch turn
+                    if (turn == 'w')
+                    {
+                        turn = 'b';
+                        turnpic.setIcon(createImageIcon("slytherinLogo.png"));
+                    }
+                    else
+                    {
+                        turn = 'w';
+                        turnpic.setIcon(createImageIcon("gryffindorLogo.png"));
+                    }
+                } // Move end
 
-				//reset
-				for (int i = 0; i < row; i++)
-				{
-					for (int j = 0; j < col; j++)
-					{
-						select[i][j] = 'u';
-					}
-				}
-				last = -1;
-			} // else end
-			redraw ();
-		}
-	}
+                //reset
+                for (int i = 0; i < row; i++)
+                {
+                    for (int j = 0; j < col; j++)
+                    {
+                        select[i][j] = 'u';
+                    }
+                }
+                last = -1;
+            } // else end
+            redraw ();
+        }
+    }
 }
