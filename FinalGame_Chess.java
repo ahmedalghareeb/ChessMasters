@@ -229,6 +229,42 @@ public class FinalGame_Chess extends Applet implements ActionListener
         }
     }
 
+	public void selectKing(int x, int y)
+	{
+		if (x - 1 >=0 && y + 1 < col && colour[x - 1][y + 1] != turn)
+		{
+			select[x - 1][y + 1] = 's';
+		}
+		if (x + 1 < row && y + 1 < col && colour[x + 1][y + 1] != turn)
+		{
+			select[x + 1][y + 1] = 's';
+		}
+		if (y - 1 >= 0 && colour[x][y - 1] != turn)
+		{
+			select[x][y - 1] = 's';
+		}
+		if (x - 1 >= 0 && colour[x - 1][y] != turn)
+		{
+			select[x - 1][y] = 's';
+		}
+		if (x - 1 >= 0 && y - 1 >= 0 && colour[x - 1][y - 1] != turn)
+		{
+			select[x - 1][y - 1] = 's';
+		}
+		if (x + 1 < row && y - 1 >= 0 && colour[x + 1][y - 1] != turn)
+		{
+			select[x + 1][y - 1] = 's';
+		}
+		if (y + 1 < col && colour[x][y + 1] != turn)
+		{
+			select[x][y + 1] = 's';
+		}
+		if (x + 1 < row && colour[x + 1][y] != turn)
+		{
+			select[x + 1][y] = 's';
+		}
+	}
+
     public void actionPerformed (ActionEvent e)
     { //moves between the screens
 		if (e.getActionCommand ().equals ("s1"))
@@ -259,6 +295,10 @@ public class FinalGame_Chess extends Applet implements ActionListener
 				if (piece[x][y] == 'p')
 				{
 					selectPawn(x, y);
+				}
+				else if (piece[x][y] == 'k')
+				{
+					selectKing(x, y);
 				}
 				last = n;
 			}
