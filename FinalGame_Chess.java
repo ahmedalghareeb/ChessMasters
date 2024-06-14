@@ -207,13 +207,25 @@ public class FinalGame_Chess extends Applet implements ActionListener
 		// Pawn Movement
 		if (colour[x][y] == 'b' && x == 6)
 		{
-			select[x - 1][y] = 's';
-			select[x - 2][y] = 's';
+			if (colour[x - 1][y] == 'x')
+			{
+				select[x - 1][y] = 's';
+				if (colour[x - 2][y] == 'x')
+				{
+					select[x - 2][y] = 's';
+				}
+			}
 		}
 		else if (colour[x][y] == 'w' && x == 1)
 		{
-			select[x + 1][y] = 's';
-			select[x + 2][y] = 's';
+			if (colour[x + 1][y] == 'x')
+			{
+				select[x + 1][y] = 's';
+				if (colour[x + 2][y] == 'x')
+				{
+					select[x + 2][y] = 's';
+				}
+			}
 		}
 		else if (colour[x][y] == 'b')
 		{
@@ -221,13 +233,21 @@ public class FinalGame_Chess extends Applet implements ActionListener
 			{
 				//black attacking white at the right
 				select[x - 1][y - 1] = 's';
+				if (colour[x - 1][y] == 'x')
+				{
+					select[x - 1][y] = 's';
+				}
 			}
-			else if (x - 1 >= 0 && y + 1 < col && colour[x - 1][y + 1] == 'w')
+			if (x - 1 >= 0 && y + 1 < col && colour[x - 1][y + 1] == 'w')
 			{
 				//black attacking white at the left
 				select[x - 1][y + 1] = 's';
+				if (colour[x - 1][y] == 'x')
+				{
+					select[x - 1][y] = 's';
+				}
 			}
-			else
+			else if (colour[x - 1][y] == 'x')
 			{
 				select[x - 1][y] = 's';
 			}
@@ -238,13 +258,21 @@ public class FinalGame_Chess extends Applet implements ActionListener
 			{
 				//white attacking black at the right
 				select[x + 1][y - 1] = 's';
+				if (colour[x + 1][y] == 'x')
+				{
+					select[x + 1][y] = 's';
+				}
 			}
-			else if (x + 1 < row && y + 1 < col && colour[x + 1][y + 1] == 'b')
+			if (x + 1 < row && y + 1 < col && colour[x + 1][y + 1] == 'b')
 			{
 				//white attacking black at the left
 				select[x + 1][y + 1] = 's';
+				if (colour[x + 1][y] == 'x')
+				{
+					select[x + 1][y] = 's';
+				}
 			}
-			else
+			else if (colour[x + 1][y] == 'x')
 			{
 				select[x + 1][y] = 's';
 			}
