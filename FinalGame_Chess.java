@@ -122,10 +122,10 @@ public class FinalGame_Chess extends Applet implements ActionListener {
 	public void generateGameScreen() { // generate game screen
 		gamePanel = new Panel();
 		gamePanel.setBackground(new Color(255, 255, 255));
-		JLabel title = new JLabel("Game");
+		JLabel title = new JLabel("Turn");
 
 		// turn pic
-		turnpic = new JLabel(createImageIcon("slytherinLogo.png"));
+		turnpic = new JLabel(createImageIcon("gryffindorLogo.png"));
 
 		JButton nextBtn = new JButton("Next");
 		JButton backBtn = new JButton("Back");
@@ -230,7 +230,7 @@ public class FinalGame_Chess extends Applet implements ActionListener {
 		// Redraw the board and set the turn
 		redraw();
 		turn = 'w'; // white starts
-		turnpic.setIcon(createImageIcon("slytherinLogo.png"));
+		turnpic.setIcon(createImageIcon("gryffindorLogo.png"));
 	}
 
 	public char getPieceTypeForInitialRow(int col) {
