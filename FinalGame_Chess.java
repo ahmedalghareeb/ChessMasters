@@ -9,60 +9,72 @@ import java.applet.Applet;
 
 public class FinalGame_Chess extends Applet implements ActionListener {
 	Panel mainPanel; // to hold all of the screens
-	Panel welcomePanel, instructionsPanel, gamePanel, winPanel, losePanel;
-	CardLayout cdLayout = new CardLayout();
+	Panel welcomePanel, instructionsPanel, gamePanel, winPanel, losePanel;// screens
+	CardLayout cdLayout = new CardLayout();// layout manager
 
 	// turns
 	JLabel turnpic;
-	char turn = 'w';
+	char turn = 'b';
 	int last = -1;
 
 	// grid
 	int row = 8;
 	int col = 8;
+//
 	JButton pieceBtnList[] = new JButton[row * col];
 
-	// Chess pieces and their positions
+// piece[][] represents the initial position of the chess pieces on the board
+// 'r' = rook, 'n' = knight, 'b' = bishop, 'k' = king, 'q' = queen, 'p' = pawn, 'x' = empty square
 	char piece[][] = {
-			{ 'r', 'n', 'b', 'k', 'q', 'b', 'n', 'r' },
-			{ 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p' },
-			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
-			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
-			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
-			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
-			{ 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p' },
-			{ 'r', 'n', 'b', 'k', 'q', 'b', 'n', 'r' } };
+			{'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'}, // Black pieces in the first row
+			{'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'}, // Black pawns in the second row
+			{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'}, // Empty squares in the middle rows
+			{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'},
+			{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'},
+			{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'},
+			{'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'}, // White pawns in the seventh row
+			{'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'}  // White pieces in the eighth row
+	};
 
+	// select[][] keeps track of which squares are currently selected for a potential move
+// 'u' = unselected, 's' = selected
 	char select[][] = {
-			{ 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u' },
-			{ 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u' },
-			{ 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u' },
-			{ 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u' },
-			{ 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u' },
-			{ 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u' },
-			{ 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u' },
-			{ 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u' } };
+			{'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u'},
+			{'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u'},
+			{'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u'},
+			{'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u'},
+			{'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u'},
+			{'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u'},
+			{'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u'},
+			{'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u'}
+	};
 
+	// colour[][] represents the color of each piece on the board
+// 'w' = white, 'b' = black, 'x' = empty square
 	char colour[][] = {
-			{ 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w' },
-			{ 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w' },
-			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
-			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
-			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
-			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
-			{ 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b' },
-			{ 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b' } };
+			{'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'},
+			{'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'},
+			{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'}, // Empty squares in the middle rows
+			{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'},
+			{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'},
+			{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'},
+			{'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'}, // Black pieces in the last two rows
+			{'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'}// White pieces in the first two rows
+	};
 
+	// bg[][] represents the background color of each square on the chessboard
+// 'w' = white, 'b' = black
 	char bg[][] = {
-			{ 'b', 'w', 'b', 'w', 'b', 'w', 'b', 'w' },
-			{ 'w', 'b', 'w', 'b', 'w', 'b', 'w', 'b' },
-			{ 'b', 'w', 'b', 'w', 'b', 'w', 'b', 'w' },
-			{ 'w', 'b', 'w', 'b', 'w', 'b', 'w', 'b' },
-			{ 'b', 'w', 'b', 'w', 'b', 'w', 'b', 'w' },
-			{ 'w', 'b', 'w', 'b', 'w', 'b', 'w', 'b' },
-			{ 'b', 'w', 'b', 'w', 'b', 'w', 'b', 'w' },
-			{ 'w', 'b', 'w', 'b', 'w', 'b', 'w', 'b' } };
-
+			{'b', 'w', 'b', 'w', 'b', 'w', 'b', 'w'}, // Alternating black and white squares
+			{'w', 'b', 'w', 'b', 'w', 'b', 'w', 'b'},
+			{'b', 'w', 'b', 'w', 'b', 'w', 'b', 'w'},
+			{'w', 'b', 'w', 'b', 'w', 'b', 'w', 'b'},
+			{'b', 'w', 'b', 'w', 'b', 'w', 'b', 'w'},
+			{'w', 'b', 'w', 'b', 'w', 'b', 'w', 'b'},
+			{'b', 'w', 'b', 'w', 'b', 'w', 'b', 'w'},
+			{'w', 'b', 'w', 'b', 'w', 'b', 'w', 'b'}
+	};
+	// end of grid
 	public void init() {// set up the main panel
 		mainPanel = new Panel();
 		mainPanel.setLayout(cdLayout);
@@ -90,17 +102,30 @@ public class FinalGame_Chess extends Applet implements ActionListener {
 
 	public void generateInstructionScreen() { // generate instruction screen
 		instructionsPanel = new Panel();
-		instructionsPanel.setBackground(new Color(255, 255, 255));
-		JLabel title = new JLabel("Instructions");
+		instructionsPanel.setBackground(new Color(185, 122, 87));
+		JLabel title = new JLabel("Chess Instructions and Rules");
+		title.setFont (new Font ("Arial", Font.BOLD, 40));
+		title.setForeground (Color.black);
+		JLabel ChessBoard = new JLabel ("1. Chessboard: An 8x8 grid with 64 squares alternating in color (light and dark).");
+		ChessBoard.setFont(new Font("Arial", Font.PLAIN, 15));
+		ChessBoard.setForeground(Color.white);
+		JLabel ChessPieces = new JLabel("2. Pieces: Each player starts with 16 pieces - 1 king, 1 queen, 2 rooks, 2 knights, 2 bishops, and 8 pawns.");
+		ChessPieces.setFont(new Font("Arial", Font.PLAIN, 15));
+		ChessPieces.setForeground(Color.white);
+		JLabel ChessMoves = new JLabel("3. Moves: Each player can move any of their pieces to an empty square on the chessboard.");
+		add(ChessPieces);
+		add (title);
+		add(ChessBoard);
 		JButton nextBtn = new JButton("Next");
 		nextBtn.setActionCommand("s3");
 		nextBtn.addActionListener(this);
 		instructionsPanel.add(title);
+		instructionsPanel.add(ChessBoard);
 		instructionsPanel.add(nextBtn);
 		mainPanel.add("2", instructionsPanel);
 	}
 
-	public Panel setupGrid() {
+	public Panel setupGrid() { // generate grid
 		// Set up grid
 		Panel gridPanel = new Panel(new GridLayout(row, col));
 		int btnIndex = 0;
@@ -117,7 +142,7 @@ public class FinalGame_Chess extends Applet implements ActionListener {
 		}
 
 		return gridPanel;
-	}
+	}//
 
 	public void generateGameScreen() { // generate game screen
 		gamePanel = new Panel();
@@ -125,7 +150,7 @@ public class FinalGame_Chess extends Applet implements ActionListener {
 		JLabel title = new JLabel("Turn");
 
 		// turn pic
-		turnpic = new JLabel(createImageIcon("gryffindorLogo.png"));
+		turnpic = new JLabel(createImageIcon("slytherinLogo.png"));
 
 		JButton nextBtn = new JButton("Next");
 		JButton backBtn = new JButton("Back");
@@ -229,8 +254,8 @@ public class FinalGame_Chess extends Applet implements ActionListener {
 
 		// Redraw the board and set the turn
 		redraw();
-		turn = 'w'; // white starts
-		turnpic.setIcon(createImageIcon("gryffindorLogo.png"));
+		turn = 'b'; // white starts
+		turnpic.setIcon(createImageIcon("slytherinLogo.png"));
 	}
 
 	public char getPieceTypeForInitialRow(int col) {
@@ -535,16 +560,22 @@ public class FinalGame_Chess extends Applet implements ActionListener {
 	public void actionPerformed(ActionEvent e) { // moves between the screens
 		if (e.getActionCommand().equals("s1"))
 			cdLayout.show(mainPanel, "1");
+		// if statement to check if the user clicked on the instructions button
 		else if (e.getActionCommand().equals("s2"))
 			cdLayout.show(mainPanel, "2");
+		// if statement to check if the user clicked on the start game button
 		else if (e.getActionCommand().equals("s3"))
 			cdLayout.show(mainPanel, "3");
+		// if statement to check if the user clicked the button to the winning screen
 		else if (e.getActionCommand().equals("s4"))
 			cdLayout.show(mainPanel, "4");
+		// if statement to check if the user clicked on the instuctions button
 		else if (e.getActionCommand().equals("s5"))
 			cdLayout.show(mainPanel, "5");
+		// if statement to check if the user clicked on the exit button
 		else if (e.getActionCommand().equals("s6"))
 			System.exit(0);
+		// if statement to check if the user clicked on the reset button
 		else if (e.getActionCommand().equals("reset")) {
 			// reset
 			resetBoard();
