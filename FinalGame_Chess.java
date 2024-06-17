@@ -23,6 +23,9 @@ public class FinalGame_Chess extends Applet implements ActionListener {
     JLabel turnpic;
     char turn = 'b';
     int last = -1;
+    boolean BK = false;
+    boolean WK = false;
+    JLabel blackScore, whiteScore;
 
     // grid
     int row = 8;
@@ -237,6 +240,18 @@ public class FinalGame_Chess extends Applet implements ActionListener {
 
         // turn pic
         turnpic = new JLabel(createImageIcon("slytherinLogo.png"));
+        // create a label for piece left
+        JLabel pieceleft = new JLabel ("pieces left:");
+        //white give up
+        JButton whiteconced = new JButton ("White resign");
+        whiteconced.setActionCommand ("wc");
+        whiteconced.addActionListener (this);
+        whiteconced.setBackground (new Color (162, 245, 231));
+        //black give up
+        JButton blackconced = new JButton ("Black resign");
+        blackconced.setActionCommand ("bc");
+        blackconced.addActionListener (this);
+        blackconced.setBackground (new Color (162, 245, 231));
         // Create button to move to the win screen
         JButton nextBtn = new JButton("Next");
         // setting the font for the button
@@ -259,15 +274,22 @@ public class FinalGame_Chess extends Applet implements ActionListener {
         backBtn.addActionListener(this);
         restartBrn.setActionCommand("reset");
         restartBrn.addActionListener(this);
+        blackScore = new JLabel ("Black: 0000");
+        whiteScore = new JLabel ("White: 0000");
 
         Panel gridPanel = setupGrid();
         //ADDING COMPONENTS TO THE GAME SCREEN
         gamePanel.add(title);
         gamePanel.add(turnpic);
         gamePanel.add(gridPanel);
+        gamePanel.add (blackScore);
+        gamePanel.add (whiteScore);
         gamePanel.add(backBtn);
         gamePanel.add(restartBrn);
         gamePanel.add(nextBtn);
+        gamePanel.add(blackconced);
+        gamePanel.add(whiteconced);
+        gamePanel.add(pieceleft);
         mainPanel.add("3", gamePanel);
     }
 
@@ -610,11 +632,55 @@ public class FinalGame_Chess extends Applet implements ActionListener {
             }
         }
     }
-
     public void selectQueen(int x, int y) {
         // queen movement
         selectBishop(x, y);
         selectRook(x, y);
+    }
+    //win check
+    public void win (boolean WK, boolean BK)
+    {
+        if (BK == false)
+        {
+            JOptionPane.showMessageDialog (null, "WHITE WINS", "VICTORY", JOptionPane.ERROR_MESSAGE);
+            cdLayout.show (mainPanel, "4");
+        }
+        if (WK == false)
+        {
+            JOptionPane.showMessageDialog (null, "BLACK WINS", "VICTORY", JOptionPane.ERROR_MESSAGE);
+            cdLayout.show (mainPanel, "4");
+        }
+
+    }
+    public void kingcheck (boolean WK, boolean BK)
+    {
+        //checks to see if king is dead
+        BK = false;
+        WK = false;
+
+        for (int i = 0 ; i < row ; i++)
+        {
+            for (int j = 0 ; j < col ; j++)
+            {
+                if (piece [i] [j] == 'k' && colour [i] [j] == 'b')
+                {
+                    //black king check
+
+                    BK = true;
+
+                }
+
+                if (piece [i] [j] == 'k' && colour [i] [j] == 'w')
+                {
+                    //white king check
+                    WK = true;
+
+                }
+
+            }
+        }
+        win (WK, BK);
+
     }
 
     public void handleGame(ActionEvent e) {
@@ -696,6 +762,36 @@ public class FinalGame_Chess extends Applet implements ActionListener {
             }
         }
     }
+    public void countPoints ()
+    {
+        //start at 0 and add every move
+        int blackpoints = 0;
+        int whitepoints = 0;
+        for (int i = 0 ; i < row ; i++)
+        {
+            for (int j = 0 ; j < col ; j++)
+            {
+                if (colour [i] [j] == 'b')
+                    blackpoints++;
+                else if (colour [i] [j] == 'w')
+                    whitepoints++;
+            }
+        }
+        if (blackpoints == 0)
+        {
+            BK = false;
+            countPoints ();
+
+        }
+        else if (whitepoints == 0)
+        {
+            WK = false;
+            countPoints ();
+
+        }
+        blackScore.setText ("Black: " + blackpoints);
+        whiteScore.setText ("White: " + whitepoints);
+    }
 
     public void actionPerformed(ActionEvent e) { // moves between the screens
         if (e.getActionCommand().equals("s1"))
@@ -722,6 +818,21 @@ public class FinalGame_Chess extends Applet implements ActionListener {
             // if statement to check if the user clicked on the instructions button
         else if (e.getActionCommand().equals("s5"))
             cdLayout.show(mainPanel, "5");
+        else if (e.getActionCommand ().equals ("wc"))
+        {
+            // white giveup
+            WK = false;
+            BK = true;
+            win (WK, BK);
+        }
+        else if (e.getActionCommand ().equals ("bc"))
+        {
+            //black giveup
+            WK = true;
+            BK = false;
+
+            win (WK, BK);
+        }
             // if statement to check if the user clicked on the exit button
         else if (e.getActionCommand().equals("s6")) {
             System.exit(0);
@@ -736,6 +847,9 @@ public class FinalGame_Chess extends Applet implements ActionListener {
         } else {
             handleGame(e);
         }
+        countPoints ();
+        //check if king is alive
+        kingcheck (WK, BK);
     }
 
     public void saveObjectToFile(Object obj, String filename) {
