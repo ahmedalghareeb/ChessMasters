@@ -121,9 +121,9 @@ public class FinalGame_Chess extends Applet implements ActionListener {
         setLayout(new BorderLayout());
         add("North", menuBar);
         add("Center", mainPanel);
-        soundFile = getAudioClip (getDocumentBase (), "Another Story.wav");
+        soundFile = getAudioClip(getDocumentBase(), "Another Story.wav");
 //this attaches the sound file “letitrock”
-        soundFile.loop ();
+        soundFile.loop();
 //put the sound on repeat
     }
 
@@ -167,6 +167,7 @@ public class FinalGame_Chess extends Applet implements ActionListener {
         instructionsPanel.setBackground(new Color(185, 122, 87));
         // Create label for the title of the instructions screen
         JLabel title = new JLabel("Chess Instructions and Rules");
+        JLabel title2 = new JLabel("Green goes first");
         // setting the font for the title
         title.setFont(new Font("Arial", Font.BOLD, 40));
         title.setForeground(Color.black);
@@ -183,6 +184,7 @@ public class FinalGame_Chess extends Applet implements ActionListener {
         instructionsPanel.add(title);
         instructionsPanel.add(PiecesMovementPic);
         instructionsPanel.add(nextBtn);
+        instructionsPanel.add(title2);
         mainPanel.add("2", instructionsPanel);
     }
 
@@ -241,17 +243,19 @@ public class FinalGame_Chess extends Applet implements ActionListener {
         // turn pic
         turnpic = new JLabel(createImageIcon("slytherinLogo.png"));
         // create a label for piece left
-        JLabel pieceleft = new JLabel ("pieces left:");
+        JLabel pieceleft = new JLabel("pieces left:");
         //white give up
-        JButton whiteconced = new JButton ("White resign");
-        whiteconced.setActionCommand ("wc");
-        whiteconced.addActionListener (this);
-        whiteconced.setBackground (new Color (162, 245, 231));
+        JButton whiteconced = new JButton("Orange resign");
+        whiteconced.setActionCommand("wc");
+        whiteconced.addActionListener(this);
+        whiteconced.setBackground(new Color(222, 100, 99));
+        whiteconced.setForeground(Color.white);
         //black give up
-        JButton blackconced = new JButton ("Black resign");
-        blackconced.setActionCommand ("bc");
-        blackconced.addActionListener (this);
-        blackconced.setBackground (new Color (162, 245, 231));
+        JButton blackconced = new JButton("Green resign");
+        blackconced.setActionCommand("bc");
+        blackconced.addActionListener(this);
+        blackconced.setBackground(new Color(222, 100, 99));
+        blackconced.setForeground(Color.white);
         // Create button to move to the win screen
         JButton nextBtn = new JButton("Next");
         // setting the font for the button
@@ -274,16 +278,16 @@ public class FinalGame_Chess extends Applet implements ActionListener {
         backBtn.addActionListener(this);
         restartBrn.setActionCommand("reset");
         restartBrn.addActionListener(this);
-        blackScore = new JLabel ("Black: 0000");
-        whiteScore = new JLabel ("White: 0000");
+        blackScore = new JLabel("green: 0000");
+        whiteScore = new JLabel("orange: 0000");
 
         Panel gridPanel = setupGrid();
         //ADDING COMPONENTS TO THE GAME SCREEN
         gamePanel.add(title);
         gamePanel.add(turnpic);
         gamePanel.add(gridPanel);
-        gamePanel.add (blackScore);
-        gamePanel.add (whiteScore);
+        gamePanel.add(blackScore);
+        gamePanel.add(whiteScore);
         gamePanel.add(backBtn);
         gamePanel.add(restartBrn);
         gamePanel.add(nextBtn);
@@ -303,6 +307,14 @@ public class FinalGame_Chess extends Applet implements ActionListener {
         JLabel title2 = new JLabel("Congratulations!");
         // creating label for the win picture
         JLabel winPic = new JLabel(createImageIcon("Win pic.png"));
+        // creating a button to move to the Game screen
+        JButton playAgain = new JButton("play Again?");
+        // setting the font for the button
+        playAgain.setBackground(new Color(222, 100, 99));
+        playAgain.setForeground(Color.white);
+        // setting the action command and action listener for the button
+        playAgain.setActionCommand("s3");
+        playAgain.addActionListener(this);
         // creating button to move to the losing screen
         JButton nextBtn = new JButton("Next");
         // setting the font for the button
@@ -315,6 +327,7 @@ public class FinalGame_Chess extends Applet implements ActionListener {
         winPanel.add(title);
         winPanel.add(title2);
         winPanel.add(winPic);
+        winPanel.add(playAgain);
         winPanel.add(nextBtn);
         mainPanel.add("4", winPanel);
     }
@@ -632,46 +645,43 @@ public class FinalGame_Chess extends Applet implements ActionListener {
             }
         }
     }
+
     public void selectQueen(int x, int y) {
         // queen movement
         selectBishop(x, y);
         selectRook(x, y);
     }
+
     //win check
-    public void win (boolean WK, boolean BK)
-    {
-        if (BK == false)
-        {
-            JOptionPane.showMessageDialog (null, "WHITE WINS", "VICTORY", JOptionPane.ERROR_MESSAGE);
-            cdLayout.show (mainPanel, "4");
+    public void win(boolean WK, boolean BK) {
+        if (BK == false) {
+            JOptionPane.showMessageDialog(null, "WHITE WINS", "VICTORY", JOptionPane.ERROR_MESSAGE);
+            cdLayout.show(mainPanel, "4");
+            resetBoard();
         }
-        if (WK == false)
-        {
-            JOptionPane.showMessageDialog (null, "BLACK WINS", "VICTORY", JOptionPane.ERROR_MESSAGE);
-            cdLayout.show (mainPanel, "4");
+        if (WK == false) {
+            JOptionPane.showMessageDialog(null, "BLACK WINS", "VICTORY", JOptionPane.ERROR_MESSAGE);
+            cdLayout.show(mainPanel, "4");
+            resetBoard();
         }
 
     }
-    public void kingcheck (boolean WK, boolean BK)
-    {
+
+    public void kingcheck(boolean WK, boolean BK) {
         //checks to see if king is dead
         BK = false;
         WK = false;
 
-        for (int i = 0 ; i < row ; i++)
-        {
-            for (int j = 0 ; j < col ; j++)
-            {
-                if (piece [i] [j] == 'k' && colour [i] [j] == 'b')
-                {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (piece[i][j] == 'k' && colour[i][j] == 'b') {
                     //black king check
 
                     BK = true;
 
                 }
 
-                if (piece [i] [j] == 'k' && colour [i] [j] == 'w')
-                {
+                if (piece[i][j] == 'k' && colour[i][j] == 'w') {
                     //white king check
                     WK = true;
 
@@ -679,7 +689,7 @@ public class FinalGame_Chess extends Applet implements ActionListener {
 
             }
         }
-        win (WK, BK);
+        win(WK, BK);
 
     }
 
@@ -762,35 +772,30 @@ public class FinalGame_Chess extends Applet implements ActionListener {
             }
         }
     }
-    public void countPoints ()
-    {
+
+    public void countPoints() {
         //start at 0 and add every move
         int blackpoints = 0;
         int whitepoints = 0;
-        for (int i = 0 ; i < row ; i++)
-        {
-            for (int j = 0 ; j < col ; j++)
-            {
-                if (colour [i] [j] == 'b')
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (colour[i][j] == 'b')
                     blackpoints++;
-                else if (colour [i] [j] == 'w')
+                else if (colour[i][j] == 'w')
                     whitepoints++;
             }
         }
-        if (blackpoints == 0)
-        {
+        if (blackpoints == 0) {
             BK = false;
-            countPoints ();
+            countPoints();
 
-        }
-        else if (whitepoints == 0)
-        {
+        } else if (whitepoints == 0) {
             WK = false;
-            countPoints ();
+            countPoints();
 
         }
-        blackScore.setText ("Black: " + blackpoints);
-        whiteScore.setText ("White: " + whitepoints);
+        blackScore.setText("Green: " + blackpoints);
+        whiteScore.setText("Orange: " + whitepoints);
     }
 
     public void actionPerformed(ActionEvent e) { // moves between the screens
@@ -818,22 +823,19 @@ public class FinalGame_Chess extends Applet implements ActionListener {
             // if statement to check if the user clicked on the instructions button
         else if (e.getActionCommand().equals("s5"))
             cdLayout.show(mainPanel, "5");
-        else if (e.getActionCommand ().equals ("wc"))
-        {
+        else if (e.getActionCommand().equals("wc")) {
             // white giveup
             WK = false;
             BK = true;
-            win (WK, BK);
-        }
-        else if (e.getActionCommand ().equals ("bc"))
-        {
+            win(WK, BK);
+        } else if (e.getActionCommand().equals("bc")) {
             //black giveup
             WK = true;
             BK = false;
 
-            win (WK, BK);
+            win(WK, BK);
         }
-            // if statement to check if the user clicked on the exit button
+        // if statement to check if the user clicked on the exit button
         else if (e.getActionCommand().equals("s6")) {
             System.exit(0);
         }
@@ -847,9 +849,9 @@ public class FinalGame_Chess extends Applet implements ActionListener {
         } else {
             handleGame(e);
         }
-        countPoints ();
+        countPoints();
         //check if king is alive
-        kingcheck (WK, BK);
+        kingcheck(WK, BK);
     }
 
     public void saveObjectToFile(Object obj, String filename) {
